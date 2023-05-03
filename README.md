@@ -59,4 +59,5 @@ docker-compose exec app bash
 yarn dev
 ```
 
-http://localhost:3000/
+http://localhost:3010/
+へアクセスする
