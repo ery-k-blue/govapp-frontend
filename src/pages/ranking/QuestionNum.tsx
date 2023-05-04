@@ -11,6 +11,8 @@ import {
 } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
+import useSWR from "swr";
+import axios from "axios";
 
 const rows = [
   {
@@ -41,7 +43,7 @@ const rows = [
     deciationValue: 52,
   },
   {
-    id: 1,
+    id: 4,
     icon: "",
     fullName_kanzi: "逢沢 一郎",
     fullname_kana: "あいさわ いちろう",
@@ -50,7 +52,7 @@ const rows = [
     deciationValue: 12,
   },
   {
-    id: 2,
+    id: 5,
     icon: "",
     fullName_kanzi: "青柳 仁士",
     fullname_kana: "あおやぎ ひとし",
@@ -59,7 +61,7 @@ const rows = [
     deciationValue: 43,
   },
   {
-    id: 3,
+    id: 6,
     icon: "",
     fullName_kanzi: "青柳 陽一郎",
     fullname_kana: "あおやぎ よういちろう",
@@ -68,7 +70,7 @@ const rows = [
     deciationValue: 52,
   },
   {
-    id: 1,
+    id: 7,
     icon: "",
     fullName_kanzi: "逢沢 一郎",
     fullname_kana: "あいさわ いちろう",
@@ -77,7 +79,7 @@ const rows = [
     deciationValue: 12,
   },
   {
-    id: 2,
+    id: 8,
     icon: "",
     fullName_kanzi: "青柳 仁士",
     fullname_kana: "あおやぎ ひとし",
@@ -86,7 +88,7 @@ const rows = [
     deciationValue: 43,
   },
   {
-    id: 3,
+    id: 9,
     icon: "",
     fullName_kanzi: "青柳 陽一郎",
     fullname_kana: "あおやぎ よういちろう",
@@ -96,6 +98,26 @@ const rows = [
   },
 ];
 
+const sampleUrl = "http://localhost:3011/hello";
+
+const fetcher = async (url: string): Promise<sampleData> => {
+  const { data } = await axios.get<sampleData>(url);
+  return data;
+};
+
+type sampleData = {
+  message: string;
+};
+
+export const Sample = () => {
+  const { data, error, isLoading } = useSWR<sampleData>(sampleUrl, fetcher);
+
+  if (error) return <div>failed to load</div>;
+  if (isLoading) return <div>loading...</div>;
+
+  return <div>{data ? data.message : "Data is not available"}</div>;
+};
+
 export default function QuestionNumTable() {
   return (
     <Container maxWidth="md">
@@ -104,6 +126,7 @@ export default function QuestionNumTable() {
       <p>
         ここに質問数とはなにか、どのようなデータを集計しているのかの説明文。
       </p>
+      <Sample />
       <TableContainer component={Paper} elevation={3}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
